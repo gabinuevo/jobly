@@ -18,6 +18,10 @@ class Company {
 
         return result.rows;
     }
+
+    static async addCompany(inputObj) {
+        const result = await db.query
+    }
 }
 
 module.exports = Company;
