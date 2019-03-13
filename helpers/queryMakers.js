@@ -1,4 +1,4 @@
-function makeQuery(reqObj) {
+function makeQueryObj(reqObj) {
 
     let idx = 1;
     let whereStrMinMax = ''
@@ -50,4 +50,37 @@ function makeQuery(reqObj) {
     return {query, searchParams};
 }
 
-module.exports = makeQuery;
+function makeInsertQuery(reqObj) {
+
+    let idx = 1;
+    let whereStrMinMax = '';
+    let searchParams = [];
+
+    let query = `INSERT INTO companies (`;
+    let valuesArr = [];
+    let valueStr = ') VALUES (';
+    let counter = 1; 
+
+    for (let key in reqObj) {
+        query+= `${key}, `;
+        valueStr += `$${counter}, `;
+        valuesArr.push(reqObj[key]);
+        counter++;
+    }
+
+    valueStr = valueStr.slice(0, -2);
+
+    query = query.slice(0, -2) + valueStr + ')';
+    
+    return {query, valuesArr};
+}
+
+let obj = {
+    'handle': 'ABC',
+    'name': 'alphabet', 
+    'num_employees': 333, 
+    'description': 'hehehehehehehe', 
+    'logo_url': 'google.com'
+}
+
+module.exports = {makeQuery, makeInsertQuery};
