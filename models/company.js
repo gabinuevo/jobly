@@ -1,6 +1,8 @@
 /** Company class for Jobly */
 const db = require("../db");
 
+const makeQuery = require('../helpers/queryMakers')
+
 /** A company on the site */
 
 class Company {
@@ -9,20 +11,13 @@ class Company {
      * [{handle, name}, ...]
      */
 
-     static async getAll({ search='%', min_employees=0, max_employees=Infinity }) {
-        const result = await db.query(
-            `SELECT
-             handle,
-             name,
-             FROM companies
-             WHERE num_employees>$1 AND num_employees<$2
-             AND name
-             LIKE '$3' `,
-             [min_employees, max_employees, search]
-        );
-        return result.rows;
-     } 
+    static async getAll(queryObj) {
+        let queryInfo = makeQuery(queryObj)
+        const result = await db.query(queryInfo.query,
+            queryInfo.searchParams);
 
-}ˀ
+        return result.rows;
+    }
+}
 
 module.exports = Company;

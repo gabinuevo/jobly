@@ -15,7 +15,7 @@ router.get("/", async function (req, res, next){
         if (min_employees > max_employees){
             throw new ExpressError ("Max employess should not be less than Min employees.", BAD_REQUEST);
         }
-        const result = await Company.getAll(search, min_employees, max_employees);
+        const result = await Company.getAll({ search, min_employees, max_employees });
         return res.json({companies: result});
     } catch (err) {
         return next(err);
