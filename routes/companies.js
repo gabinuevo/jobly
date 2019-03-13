@@ -1,6 +1,7 @@
 const Router = require("express").Router;
 const Company = require("../models/company");
 const ExpressError = require("../helpers/expressError");
+const { validate } = require("jsonschema");
 const { BAD_REQUEST } = require("../config");
 
 const router = new Router();
@@ -9,7 +10,7 @@ const router = new Router();
 * list of companies matching passed in parameters.
 * => {companies [{name, handle}, ...]}
 */
-router.get("/", async function (req, res, next){
+router.get("/", async function (req, res, next) {
     try {
         const { search, min_employees, max_employees } = req.body;
         if (min_employees > max_employees){
@@ -22,6 +23,20 @@ router.get("/", async function (req, res, next){
     }
 });
 
-
+router.post("/", async function (req, res, next) {
+    try {
+        const validation = validate(req.body, companySchemaNew);
+        if (!validation.valid) {
+            return next({
+                status: 400,
+                error: validation.errors.map(e => e.stack)
+            });
+        }
+        const company = await Company.addCompany(req.body);
+        return res.status(201).json({company: company});
+    } catch (err) {
+        return next(err);
+    }
+});
 
 module.exports = router;
