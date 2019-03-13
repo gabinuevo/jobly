@@ -1,7 +1,6 @@
 {
   "name": "y",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,5 +17,14 @@
   },
   "devDependencies": {
     "supertest": "^4.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkabinuevo/jobly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kkabinuevo/jobly/issues"
+  },
+  "homepage": "https://github.com/kkabinuevo/jobly#readme",
+  "description": ""
 }
