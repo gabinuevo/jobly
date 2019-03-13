@@ -7,6 +7,8 @@ const SECRET_KEY = process.env.SECRET_KEY || 'test';
 
 const PORT = +process.env.PORT || 3000;
 
+const BAD_REQUEST = 400;
+
 // database is:
 //
 // - on Heroku, get from env var DATABASE_URL
@@ -26,4 +28,5 @@ module.exports = {
   SECRET_KEY,
   PORT,
   DB_URI,
+  BAD_REQUEST
 };

@@ -9,7 +9,7 @@ class Company {
      * [{handle, name}, ...]
      */
 
-     static async getAll({ search='%', min_employess=0, max_employees=Infinity }) {
+     static async getAll({ search='%', min_employees=0, max_employees=Infinity }) {
         const result = await db.query(
             `SELECT
              handle,
@@ -18,9 +18,11 @@ class Company {
              WHERE num_employees>$1 AND num_employees<$2
              AND name
              LIKE '$3' `,
-             [min_employess, max_employees, search]
+             [min_employees, max_employees, search]
         );
         return result.rows;
      } 
 
-}
+}ˀ
+
+module.exports = Company;
