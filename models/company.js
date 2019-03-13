@@ -1,7 +1,7 @@
 /** Company class for Jobly */
 const db = require("../db");
 
-const makeQuery = require('../helpers/queryMakers')
+const { makeGetQuery, makeInsertQuery } = require('../helpers/queryMakers')
 
 /** A company on the site */
 
@@ -12,7 +12,7 @@ class Company {
      */
 
     static async getAll(queryObj) {
-        let queryInfo = makeQuery(queryObj)
+        let queryInfo = makeGetQuery(queryObj)
         const result = await db.query(queryInfo.query,
             queryInfo.searchParams);
 

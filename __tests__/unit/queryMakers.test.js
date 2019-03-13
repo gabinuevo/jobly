@@ -1,4 +1,4 @@
-const sqlForPartialUpdate = require('../../helpers/queryMakers')
+const { makeGetQuery, makeInsertQuery } = require('../../helpers/queryMakers')
 
 const items = {
   'search': 'value1',

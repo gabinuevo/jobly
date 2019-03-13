@@ -1,4 +1,12 @@
-function makeQueryObj(reqObj) {
+/** Help functions to generate dynamic SQL queries */
+
+/** Generates search query to search for, depending on input:
+ * - All companies,
+ * - A company by name or partial name,
+ * - Companies with min max employee requirements,
+ * - A company ny name or partial name and min max employees.
+ */
+function makeGetQuery(reqObj) {
 
     let idx = 1;
     let whereStrMinMax = ''
@@ -50,22 +58,21 @@ function makeQueryObj(reqObj) {
     return {query, searchParams};
 }
 
+/** Generates an INSERT SQL query dynamically based on input
+ * from client. Minimum information require is handle and name.
+ */
 function makeInsertQuery(reqObj) {
-
-    let idx = 1;
-    let whereStrMinMax = '';
-    let searchParams = [];
 
     let query = `INSERT INTO companies (`;
     let valuesArr = [];
     let valueStr = ') VALUES (';
-    let counter = 1; 
+    let idx = 1; 
 
     for (let key in reqObj) {
         query+= `${key}, `;
-        valueStr += `$${counter}, `;
+        valueStr += `$${idx}, `;
         valuesArr.push(reqObj[key]);
-        counter++;
+        idx++;
     }
 
     valueStr = valueStr.slice(0, -2);
@@ -83,4 +90,4 @@ let obj = {
     'logo_url': 'google.com'
 }
 
-module.exports = {makeQuery, makeInsertQuery};
+module.exports = {makeGetQuery, makeInsertQuery};
