@@ -82,12 +82,4 @@ function makeInsertQuery(reqObj) {
     return {query, valuesArr};
 }
 
-let obj = {
-    'handle': 'ABC',
-    'name': 'alphabet', 
-    'num_employees': 333, 
-    'description': 'hehehehehehehe', 
-    'logo_url': 'google.com'
-}
-
 module.exports = {makeGetQuery, makeInsertQuery};

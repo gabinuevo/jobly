@@ -12,16 +12,23 @@ class Company {
      */
 
     static async getAll(queryObj) {
-        let queryInfo = makeGetQuery(queryObj)
+        const queryInfo = makeGetQuery(queryObj);
         const result = await db.query(queryInfo.query,
             queryInfo.searchParams);
 
         return result.rows;
     }
-
+    
+    /** Insert a new company into the database -- returns
+     * {handle, name, num_employees, descrption, logo_url}
+     */
     static async addCompany(inputObj) {
-        const result = await db.query
+        const queryInfo = makeInsertQuery(inputObj);
+        const result = await db.query(queryInfo.query, queryInfor.valuesArr);
+
+        return result.rows[0];
     }
+
 }
 
 module.exports = Company;
