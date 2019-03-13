@@ -23,17 +23,17 @@ function makeQuery(reqObj) {
         query += whereStrMinMax;
     }
 
-    let searchStr = ''
+    let searchStr = '';
 
     for (let key in reqObj) {
         if (key === "search") {
-            searchStr += `$${idx} OR `;
+            searchStr += `name ILIKE $${idx} OR `;
             searchParams.push(`${reqObj[key]}%`);
             idx += 1;
-            searchStr += `$${idx} OR `;
+            searchStr += `name ILIKE $${idx} OR `;
             searchParams.push(`%${reqObj[key]}%`);
             idx += 1;
-            searchStr += `$${idx} OR `;
+            searchStr += `name ILIKE $${idx} OR `;
             searchParams.push(`%${reqObj[key]}`);
             idx += 1;
         }
@@ -41,7 +41,7 @@ function makeQuery(reqObj) {
 
     if (searchStr) {
         searchTerms = searchStr.slice(0, -4);
-        searchStr = `name LIKE ${searchTerms}`;
+        searchStr = `${searchTerms}`;
         query += searchStr;
     }
 
