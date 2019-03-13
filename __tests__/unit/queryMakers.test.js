@@ -1,14 +1,14 @@
-const sqlForPartialUpdate = require('../../helpers/partialUpdate')
+const sqlForPartialUpdate = require('../../helpers/queryMakers')
 
 const items = {
-  'column1': 'value1',
-  '_column2': 'value2', 
-  'column3': 'value3'
+  'search': 'value1',
+  'min_employees': 'value2', 
+  'max_exmployees': 'value3'
 }
 
-
-describe("partialUpdate()", () => {
-  it("should generate a proper partial update query with just 1 field",
+// Needs much modification!
+describe("queryMakers()", () => {
+  it("generates variable query string depending on search and employee input",
       function () {
         const response = sqlForPartialUpdate('tests', items, 'testA', 'testB')
 
