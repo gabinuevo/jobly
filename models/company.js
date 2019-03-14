@@ -1,7 +1,7 @@
 /** Company class for Jobly */
 const db = require("../db");
-
-const { makeGetQuery, makeInsertQuery } = require("../helpers/queryMakers")
+const sqlForPartialUpdate = require("../helpers/partialUpdate");
+const { makeGetQuery, makeInsertQuery } = require("../helpers/queryMakers");
 
 /** A company on the site */
 
@@ -33,8 +33,17 @@ class Company {
     static async getOneCompany(handle) {
         const result = await db.query(
             `SELECT handle, name, num_employees, description, logo_url 
-            FROM companies WHERE handle = $1`,
+            FROM companies WHERE handle ILIKE $1`,
             [handle]);
+
+        return result.rows[0];
+    }
+
+    static async updateOneCompany(table, items, key, id) {
+
+        const queryInfo = sqlForPartialUpdate(table, items, key, id);
+
+        const result = await db.query(queryInfo.query, queryInfo.values);
 
         return result.rows[0];
     }
