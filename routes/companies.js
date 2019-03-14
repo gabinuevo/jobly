@@ -3,7 +3,8 @@ const Company = require("../models/company");
 const ExpressError = require("../helpers/expressError");
 const { BAD_REQUEST, NOT_FOUND } = require("../config");
 const { validate } = require("jsonschema");
-const companySchemaNew = require("../schemas/companySchemaNew.json")
+const companySchemaNew = require("../schemas/companySchemaNew.json");
+const companySchemaPatch = require("../schemas/companySchemaPatch.json");
 
 const router = new Router();
 
@@ -69,6 +70,14 @@ router.get("/:handle", async function (req, res, next){
  */
 router.patch("/:handle", async function (req, res, next){
     try {
+        const validation = validate(req.body, companySchemaPatch);
+        if (!validation.valid) {
+            return next({
+                status: BAD_REQUEST,
+                message: validation.errors.map(e => e.stack)
+            });
+        }
+
         const handle = req.params.handle;
 
         const updatedCompany = await Company.updateOneCompany('companies', req.body, 'handle', handle);
