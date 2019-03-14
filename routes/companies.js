@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const Company = require("../models/company");
+const { Company } = require("../models/company");
 const ExpressError = require("../helpers/expressError");
 const { BAD_REQUEST, NOT_FOUND } = require("../config");
 const { validate } = require("jsonschema");
@@ -31,10 +31,8 @@ router.post("/", async function (req, res, next) {
     try {
         const validation = validate(req.body, companySchemaNew);
         if (!validation.valid) {
-            return next({
-                status: BAD_REQUEST,
-                message: validation.errors.map(e => e.stack)
-            });
+            const errors = validation.errors.map(e => e.stack);
+            throw new ExpressError (errors, BAD_REQUEST);
         }
         const company = await Company.addCompany(req.body);
 
@@ -52,10 +50,7 @@ router.get("/:handle", async function (req, res, next){
         const company = await Company.getOneCompany(handle);
 
         if (!company) {
-            return next({
-                status: NOT_FOUND,
-                message: "Company not found"
-            });
+            throw new ExpressError ("Company not found", NOT_FOUND);
         }
 
         return res.json({ company })
@@ -73,10 +68,8 @@ router.patch("/:handle", async function (req, res, next){
     try {
         const validation = validate(req.body, companySchemaPatch);
         if (!validation.valid) {
-            return next({
-                status: BAD_REQUEST,
-                message: validation.errors.map(e => e.stack)
-            });
+            const errors = validation.errors.map(e => e.stack);
+            throw new ExpressError (errors, BAD_REQUEST);
         }
 
         const handle = req.params.handle;
@@ -104,10 +97,7 @@ router.delete("/:handle", async function (req, res, next){
         const result = await Company.deleteOneCompany(req.params.handle);
 
         if (!result.rowCount) {
-            return next({
-                status: NOT_FOUND,
-                message: "Company not found"
-            });
+            throw new ExpressError ("Company not found", NOT_FOUND);
         }
 
         return res.json({ message: "Company deleted." })

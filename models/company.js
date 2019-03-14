@@ -4,12 +4,12 @@ const sqlForPartialUpdate = require("../helpers/partialUpdate");
 const { makeGetQuery, makeInsertQuery } = require("../helpers/companyQueryGens");
 const { BAD_REQUEST } = require("../config");
 
+const safeFields = ["handle", "name", "num_employees",
+"description", "logo_url"];
+
 /** A company on the site */
 
 class Company {
-
-    static safeFields = ["handle", "name", "num_employees",
-                         "description", "logo_url"];
 
     /** Get a list of companies -- returns
      * [{handle, name}, ...]
@@ -73,4 +73,4 @@ class Company {
 
 }
 
-module.exports = Company;
+module.exports = {Company, safeFields};
