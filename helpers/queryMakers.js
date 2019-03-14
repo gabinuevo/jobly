@@ -9,10 +9,10 @@
 function makeGetQuery(reqObj) {
 
     let idx = 1;
-    let whereStrMinMax = ''
+    let whereStrMinMax = '';
     let searchParams = [];
 
-    let query = `SELECT handle, name FROM companies `
+    let query = `SELECT handle, name FROM companies `;
 
     for (let key in reqObj) {
         if (key === "min_employees" && reqObj["min_employees"]) {
@@ -25,10 +25,6 @@ function makeGetQuery(reqObj) {
             searchParams.push(reqObj[key]);
             idx += 1;
         }
-    }
-
-    if (whereStrMinMax) {
-        query += `WHERE ${whereStrMinMax}`;
     }
  
     let searchStr = '';
@@ -50,9 +46,12 @@ function makeGetQuery(reqObj) {
     if (searchStr && !whereStrMinMax) {
         const searchTerms = searchStr.slice(0, -4);
         query += `WHERE ${searchTerms}`;
+    } else if (!searchStr && whereStrMinMax) {
+        whereStrMinMax = whereStrMinMax.slice(0, -5);
+        query += `WHERE ${whereStrMinMax}`;
     } else if (searchStr) {
-        const searchTerms = searchStr.slice(0, -4);
-        query += searchTerms;
+        whereStrMinMax = whereStrMinMax.slice(0, -4);
+        query += whereStrMinMax;
     }
     
     return {query, searchParams};
