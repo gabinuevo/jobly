@@ -1,19 +1,22 @@
 /** Company class for Jobly */
 const db = require("../db");
 const sqlForPartialUpdate = require("../helpers/partialUpdate");
-const { makeGetQuery, makeInsertQuery } = require("../helpers/queryMakers");
+const { makeGetQuery, makeInsertQuery } = require("../helpers/companyQueryGens");
 const { BAD_REQUEST } = require("../config");
 
 /** A company on the site */
 
 class Company {
 
+    static safeFields = ["handle", "name", "num_employees",
+                         "description", "logo_url"];
+
     /** Get a list of companies -- returns
      * [{handle, name}, ...]
      */
 
     static async getAll(queryObj) {
-        const queryInfo = makeGetQuery(queryObj);
+        const queryInfo = makeGetQuery(queryObj, safeFields);
         const result = await db.query(queryInfo.query,
             queryInfo.searchParams);
 
@@ -24,7 +27,7 @@ class Company {
      * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
         try {
-            const queryInfo = makeInsertQuery(inputObj);
+            const queryInfo = makeInsertQuery(inputObj, safeFields);
             const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
             return result.rows[0];
@@ -49,7 +52,7 @@ class Company {
      * company data. */
     static async updateOneCompany(table, items, key, id) {
 
-        const queryInfo = sqlForPartialUpdate(table, items, key, id);
+        const queryInfo = sqlForPartialUpdate(table, items, key, id, safeFields);
 
         const result = await db.query(queryInfo.query, queryInfo.values);
 
