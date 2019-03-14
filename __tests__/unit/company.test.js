@@ -53,11 +53,7 @@ describe("Company.getAll()", () => {
         async function () {
           const response = await Company.getAll();
 
-          expect(Array.isArray(response)).toEqual(true);
-          expect(response.length).toEqual(2);
           expect(response).toEqual([ { handle: 'TEST', name: 'TESTING' }, { handle: 'TEST2', name: 'UNITEXAM' } ]);
-          expect(typeof response[0]).toEqual('object');
-          expect(typeof response[1]).toEqual('object');  
     });
 
     it("returns all results that match params sent in by user",
@@ -71,6 +67,8 @@ describe("Company.getAll()", () => {
           expect(response[1]).toEqual(undefined);  
     });
 });
+
+// fixme make these    const CONSTANT_NAMES
 
 let goodTestCompany = {
     handle: 'TEST3',
@@ -91,15 +89,18 @@ describe("Company.addCompany()", () => {
             const response = await Company.addCompany(goodTestCompany);
 
             expect(typeof response).toEqual('object');
-            expect(response).toEqual({ handle: 'TEST3',
+            expect(response).toEqual({ handle: goodTestCompany.handle,
             name: 'TESTING3',
             num_employees: 103,
             description: 'TESTING ADDCOMPANY',
-            logo_url: null });
+            logo_url: null
+        });
+
+            expect(response).toEqual({...goodTestCompany, logo_url: null})
             
             const totalCompanies = await Company.getAll();
 
-            expect(totalCompanies.length).toEqual(3);
+            expect(totalCompanies.length).toEqual(3);  // let handles = response.map(...); expect(handles).toEqual(['TEST', 'TEST2', 'TEST3'])
     });
     it("does not accept invalid params",
         async function () {

@@ -7,12 +7,25 @@
  * - A company ny name or partial name and min max employees.
  */
 function makeGetQuery(reqObj) {
-
+// Fixme function nzme and docstring
     let idx = 1;
     let whereStrMinMax = '';
     let searchParams = [];
 
     let query = `SELECT handle, name FROM companies `;
+
+    // if reqObj["min_employees"] !== undefined {
+    //     whereStrMinMax += `num_employees>$${idx} AND `;
+    //     searchParams.push(reqObj[key]);
+    //     idx += 1;
+    // }
+
+    // if reqObj["min_employees"] !== undefined {
+    //     whereStrMinMax += `num_employees>$${idx} AND `;
+    //     searchParams.push(reqObj[key]);
+    //     idx += 1;
+    // }
+
 
     for (let key in reqObj) {
         if (key === "min_employees" && reqObj["min_employees"]) {
@@ -20,6 +33,7 @@ function makeGetQuery(reqObj) {
             searchParams.push(reqObj[key]);
             idx += 1;
         }
+        // Fixme be explicit with belowlimiter
         if (key === "max_employees" && reqObj["max_employees"]) {
             whereStrMinMax += `num_employees<$${idx} AND `;
             searchParams.push(reqObj[key]);
@@ -28,7 +42,7 @@ function makeGetQuery(reqObj) {
     }
  
     let searchStr = '';
-
+// Fixme: only need middle search
     for (let key in reqObj) {
         if (key === "search" && reqObj["search"]) {
             searchStr += `name ILIKE $${idx} OR `;
@@ -43,8 +57,10 @@ function makeGetQuery(reqObj) {
         }
     }
 
+    
+
     if (searchStr && !whereStrMinMax) {
-        const searchTerms = searchStr.slice(0, -4);
+        const searchTerms = searchStr.slice(0, -4); // " OR " = 4
         query += `WHERE ${searchTerms}`;
     } else if (!searchStr && whereStrMinMax) {
         whereStrMinMax = whereStrMinMax.slice(0, -5);
