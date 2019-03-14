@@ -1,23 +1,26 @@
 const { makeGetQuery, makeInsertQuery } = require('../../helpers/queryMakers')
 
 const items = {
-  'search': 'value1',
-  'min_employees': 'value2', 
-  'max_exmployees': 'value3'
+  'handle': 'value1',
+  'name': 'value2', 
+  'num_employees': 'value3',
+  'description': 'test description',
+  'logo_url': 'www.testing.com'
 }
 
 // Needs much modification!
-describe("queryMakers()", () => {
-  it("generates variable query string depending on search and employee input",
+describe("makeInsertQuery()", () => {
+  it("generates variable INSERT query string depending on user input",
       function () {
-        const response = sqlForPartialUpdate('tests', items, 'testA', 'testB')
+        const response = makeInsertQuery(items);
 
         expect(typeof response).toEqual('object');
         expect(typeof response.query).toEqual('string');
-        expect(response.query).toEqual('UPDATE tests SET column1=$1, column3=$2 WHERE testA=$3 RETURNING *');
-        expect(Array.isArray(response.values)).toEqual(true);
-        expect(response.values).toEqual(["value1", "value3", "testB"]);
+        expect(Array.isArray(response.valuesArr)).toEqual(true);
+        expect(response.valuesArr).toEqual(["value1", "value2", "value3", "test description", "www.testing.com"]);
 
   });
 });
 
+
+     
