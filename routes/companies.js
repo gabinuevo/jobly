@@ -1,8 +1,9 @@
 const Router = require("express").Router;
 const Company = require("../models/company");
 const ExpressError = require("../helpers/expressError");
-const { validate } = require("jsonschema");
 const { BAD_REQUEST } = require("../config");
+const { validate } = require("jsonschema");
+const companySchemaNew = require("../schemas/companySchemaNew.json")
 
 const router = new Router();
 

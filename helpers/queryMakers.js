@@ -77,7 +77,8 @@ function makeInsertQuery(reqObj) {
 
     valueStr = valueStr.slice(0, -2);
 
-    query = query.slice(0, -2) + valueStr + ')';
+    query = query.slice(0, -2) + valueStr + `) RETURNING handle, name,
+    num_employees, description, logo_url`;
     
     return {query, valuesArr};
 }

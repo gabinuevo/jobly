@@ -24,8 +24,8 @@ class Company {
      */
     static async addCompany(inputObj) {
         const queryInfo = makeInsertQuery(inputObj);
-        const result = await db.query(queryInfo.query, queryInfor.valuesArr);
-
+        const result = await db.query(queryInfo.query, queryInfo.valuesArr);
+        debugger;
         return result.rows[0];
     }
 
