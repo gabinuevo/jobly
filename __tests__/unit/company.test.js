@@ -115,3 +115,28 @@ describe("Company.addCompany()", () => {
             expect(totalCompanies.length).toEqual(2);
     });
 });
+
+describe("Company.getOneCompany()", () => {
+    it("returns data of specified company",
+        async function () {
+            const response = await Company.getOneCompany('TEST');
+
+            expect(typeof response).toEqual('object');
+            expect(response).toEqual({ handle: 'TEST',
+            name: 'TESTING',
+            num_employees: 5,
+            description: 'DESCRIBE TEST',
+            logo_url: 'www.test.com' });
+
+    });
+    it("returns undefined object if not found",
+        async function () {
+            const response = await Company.getOneCompany('FALSE_TEST');
+            
+            expect(response).toEqual(undefined);
+            
+            const totalCompanies = await Company.getAll();
+
+            expect(totalCompanies.length).toEqual(2);
+    });
+});
