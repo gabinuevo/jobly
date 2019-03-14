@@ -20,8 +20,7 @@ class Company {
     }
     
     /** Insert a new company into the database -- returns
-     * {handle, name, num_employees, descrption, logo_url}
-     */
+     * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
 
         const queryInfo = makeInsertQuery(inputObj);
@@ -30,6 +29,8 @@ class Company {
         return result.rows[0];
     }
 
+    /** Get all company data using company handle. Returns company
+     * object or company not found error. */
     static async getOneCompany(handle) {
         const result = await db.query(
             `SELECT handle, name, num_employees, description, logo_url 
@@ -39,6 +40,9 @@ class Company {
         return result.rows[0];
     }
 
+    /** Takes in viariable information on a company selected via handle,
+     * changes appropriate fields, returns company object with
+     * company data. */
     static async updateOneCompany(table, items, key, id) {
 
         const queryInfo = sqlForPartialUpdate(table, items, key, id);
@@ -46,6 +50,18 @@ class Company {
         const result = await db.query(queryInfo.query, queryInfo.values);
 
         return result.rows[0];
+    }
+
+    /** Takes in company handle, deletes company if in database. 
+     * Returns SQL DELETE object. */
+    static async deleteOneCompany(handle) {
+
+        const result = await db.query(
+            `DELETE FROM companies
+            WHERE handle=$1`,
+            [handle]);
+
+        return result;
     }
 
 }

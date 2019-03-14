@@ -87,4 +87,23 @@ router.patch("/:handle", async function (req, res, next){
     }
 });
 
+/** Delete company via company handle. Returns --
+ * { message: "Company deleted." } */
+router.delete("/:handle", async function (req, res, next){
+    try {
+        const result = await Company.deleteOneCompany(req.params.handle);
+
+        if (!result.rowCount) {
+            return next({
+                status: NOT_FOUND,
+                message: "Company not found"
+            });
+        }
+
+        return res.json({ message: "Company deleted." })
+    } catch (err) {
+        return next(err);
+    }
+});
+
 module.exports = router;
