@@ -1,7 +1,7 @@
 /** Company class for Jobly */
 const db = require("../db");
 
-const { makeGetQuery, makeInsertQuery } = require('../helpers/queryMakers')
+const { makeGetQuery, makeInsertQuery } = require("../helpers/queryMakers")
 
 /** A company on the site */
 
@@ -23,9 +23,19 @@ class Company {
      * {handle, name, num_employees, descrption, logo_url}
      */
     static async addCompany(inputObj) {
+
         const queryInfo = makeInsertQuery(inputObj);
         const result = await db.query(queryInfo.query, queryInfo.valuesArr);
-        debugger;
+
+        return result.rows[0];
+    }
+
+    static async getOneCompany(handle) {
+        const result = await db.query(
+            `SELECT handle, name, num_employees, description, logo_url 
+            FROM companies WHERE handle = $1`,
+            [handle]);
+
         return result.rows[0];
     }
 

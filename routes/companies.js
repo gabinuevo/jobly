@@ -34,8 +34,29 @@ router.post("/", async function (req, res, next) {
             });
         }
         const company = await Company.addCompany(req.body);
-        return res.status(201).json({company: company});
+
+        return res.status(201).json({ company });
     } catch (err) {
+        return next(err);
+    }
+});
+
+router.get("/:handle", async function (req, res, next){
+    try {
+        const handle = req.params.handle;
+
+        const company = await Company.getOneCompany(handle);
+
+        if (!company) {
+            return next({
+                status: 404,
+                message: "Company not found"
+            });
+        }
+
+        return res.json({ company })
+
+    } catch(err) {
         return next(err);
     }
 });
