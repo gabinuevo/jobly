@@ -12,7 +12,9 @@
  *
  */
 
-function sqlForPartialUpdate(table, items, key, id, safeFields) {
+// const { safeFields } = require('../models/company');
+
+function sqlForPartialUpdate(table, items, key, id) {
   // keep track of item indexes
   // store all the columns we want to update and associate with vals
 
@@ -21,7 +23,7 @@ function sqlForPartialUpdate(table, items, key, id, safeFields) {
 
   // filter out keys that start with "_" -- we don't want these in DB
   for (let key in items) {
-    if (key.startsWith('_') || !safeFields.includes(key)) {
+    if (key.startsWith('_')) {
       delete items[key];
     }
   }
@@ -33,7 +35,7 @@ function sqlForPartialUpdate(table, items, key, id, safeFields) {
 
   // build query
   let cols = columns.join(', ');
-  let query = `UPDATE ${table} SET ${cols} WHERE ${key} ILIKE $${idx} RETURNING *`;
+  let query = `UPDATE ${table} SET ${cols} WHERE ${key}=$${idx} RETURNING *`;
 
   let values = Object.values(items);
   values.push(id);

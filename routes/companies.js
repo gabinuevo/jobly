@@ -15,7 +15,7 @@ const router = new Router();
 router.get("/", async function (req, res, next) {
     try {
         const { search, min_employees, max_employees } = req.body;
-        // Fixme test results of below comparison
+        // note: if one is missing, this if statement will not run
         if (min_employees > max_employees){
             throw new ExpressError ("Max employees should not be less than Min employees.", BAD_REQUEST);
         }

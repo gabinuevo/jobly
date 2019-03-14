@@ -16,7 +16,7 @@ class Company {
      */
 
     static async getAll(queryObj) {
-        const queryInfo = makeGetQuery(queryObj, safeFields);
+        const queryInfo = makeGetQuery(queryObj);
         const result = await db.query(queryInfo.query,
             queryInfo.searchParams);
 
@@ -27,7 +27,7 @@ class Company {
      * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
         try {
-            const queryInfo = makeInsertQuery(inputObj, safeFields);
+            const queryInfo = makeInsertQuery(inputObj);
             const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
             return result.rows[0];
@@ -52,7 +52,7 @@ class Company {
      * company data. */
     static async updateOneCompany(table, items, key, id) {
 
-        const queryInfo = sqlForPartialUpdate(table, items, key, id, safeFields);
+        const queryInfo = sqlForPartialUpdate(table, items, key, id);
 
         const result = await db.query(queryInfo.query, queryInfo.values);
 
