@@ -2,6 +2,7 @@
 const db = require("../db");
 const sqlForPartialUpdate = require("../helpers/partialUpdate");
 const { makeGetQuery, makeInsertQuery } = require("../helpers/queryMakers");
+const { BAD_REQUEST } = require("../config");
 
 /** A company on the site */
 
@@ -22,11 +23,14 @@ class Company {
     /** Insert a new company into the database -- returns
      * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
+        try {
+            const queryInfo = makeInsertQuery(inputObj);
+            const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
-        const queryInfo = makeInsertQuery(inputObj);
-        const result = await db.query(queryInfo.query, queryInfo.valuesArr);
-
-        return result.rows[0];
+            return result.rows[0];
+        } catch (err) {
+            throw {status: BAD_REQUEST, message: 'Company handle already taken'}
+        }
     }
 
     /** Get all company data using company handle. Returns company

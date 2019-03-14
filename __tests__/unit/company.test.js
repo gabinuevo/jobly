@@ -71,3 +71,47 @@ describe("Company.getAll()", () => {
           expect(response[1]).toEqual(undefined);  
     });
 });
+
+let goodTestCompany = {
+    handle: 'TEST3',
+    name: 'TESTING3',
+    num_employees: 103,
+    description: 'TESTING ADDCOMPANY'
+}
+
+let badTestCompany = {
+    handle: 'TEST',
+    name: 'TESTING4',
+    description: 'TESTING ADDCOMPANY'
+}
+
+describe("Company.addCompany()", () => {
+    it("returns data of new company added into database",
+        async function () {
+            const response = await Company.addCompany(goodTestCompany);
+
+            expect(typeof response).toEqual('object');
+            expect(response).toEqual({ handle: 'TEST3',
+            name: 'TESTING3',
+            num_employees: 103,
+            description: 'TESTING ADDCOMPANY',
+            logo_url: null });
+            
+            const totalCompanies = await Company.getAll();
+
+            expect(totalCompanies.length).toEqual(3);
+    });
+    it("does not accept invalid params",
+        async function () {
+            const response = await Company.addCompany(badTestCompany).catch(
+                e => expect(e).toEqual({
+                    "message": "Company handle already taken",
+                    "status": 400,
+                  })
+            );
+            
+            const totalCompanies = await Company.getAll();
+
+            expect(totalCompanies.length).toEqual(2);
+    });
+});
