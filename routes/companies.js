@@ -15,7 +15,7 @@ router.get("/", async function (req, res, next) {
     try {
         const { search, min_employees, max_employees } = req.body;
         if (min_employees > max_employees){
-            throw new ExpressError ("Max employess should not be less than Min employees.", BAD_REQUEST);
+            throw new ExpressError ("Max employees should not be less than Min employees.", BAD_REQUEST);
         }
         const result = await Company.getAll({ search, min_employees, max_employees });
         return res.json({companies: result});
@@ -30,7 +30,7 @@ router.post("/", async function (req, res, next) {
         if (!validation.valid) {
             return next({
                 status: 400,
-                error: validation.errors.map(e => e.stack)
+                message: validation.errors.map(e => e.stack)
             });
         }
         const company = await Company.addCompany(req.body);
