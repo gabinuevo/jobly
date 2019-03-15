@@ -15,15 +15,19 @@ class Company {
         return safeFields
     }
 
-    /** Get a list of companies -- returns
+    /** Get a list of companies 
+     * NOTE: MUST TAKE OBJECT
+     * FIXME: Naming can be clearer; maybe searchByTerms()???
+     * -- returns
      * [{handle, name}, ...]
      */
 
     static async getAll(queryObj) {
-        const safeFields = Company.getSafeFields()
-        const queryInfo = makeGetQuery(queryObj);
+        const safeFields = this.getSafeFields();
+
+        const queryInfo = makeGetQuery(queryObj, safeFields);
         const result = await db.query(queryInfo.query,
-            queryInfo.searchParams, safeFields);
+            queryInfo.searchParams);
 
         return result.rows;
     }
@@ -32,7 +36,7 @@ class Company {
      * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
         try {
-            const safeFields = Company.getSafeFields()
+            const safeFields = Company.getSafeFields();
             const queryInfo = makeInsertQuery(inputObj, safeFields);
             const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
@@ -79,4 +83,4 @@ class Company {
 
 }
 
-module.exports = {Company, safeFields};
+module.exports = Company;

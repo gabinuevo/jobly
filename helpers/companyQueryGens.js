@@ -15,6 +15,10 @@ function makeGetQuery(reqObj) {
 
     let query = `SELECT handle, name FROM companies `;
 
+    if (!reqObj) {
+        return query;
+    }
+
     // Intentionally not letting searches for companies with 0 employees pass.
     if (reqObj["min_employees"]) {
         whereStrMinMax += `num_employees>$${idx} AND `;
@@ -23,7 +27,7 @@ function makeGetQuery(reqObj) {
     }
 
     if (reqObj["max_employees"]) {
-        whereStrMinMax += `num_employees>$${idx} AND `;
+        whereStrMinMax += `num_employees<$${idx} AND `;
         searchParams.push(reqObj["max_employees"]);
         idx += 1;
     }
@@ -68,8 +72,7 @@ function makeInsertQuery(reqObj, safeFields) {
     valueStr = valueStr.slice(0, -2); // ", " = 2
 
     // ", " = 2
-    query = query.slice(0, -2) + valueStr + `) RETURNING handle, name,
-    num_employees, description, logo_url`;
+    query = query.slice(0, -2) + valueStr + `) RETURNING handle, name, num_employees, description, logo_url`;
     
     return {query, valuesArr};
 }

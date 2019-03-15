@@ -2,8 +2,6 @@ const Company = require("../../models/company");
 
 process.env.NODE_ENV = "test";
 
-const request = require("supertest");
-
 const app = require("../../app");
 
 const db = require("../../db");
@@ -20,15 +18,15 @@ beforeEach(async () => {
             description,
             num_employees)
         VALUES (
-            "TEST", 
-            "TESTING", 
-            "www.test.com", 
-            "DESCRIBE TEST", 
+            'TEST', 
+            'TESTING', 
+            'www.test.com', 
+            'DESCRIBE TEST', 
             5), (
-                "TEST2", 
-                "UNITEXAM", 
-                "www.test.com2", 
-                "DESCRIBE TEST2", 
+                'TEST2', 
+                'UNITEXAM', 
+                'www.test.com2', 
+                'DESCRIBE TEST2',
                 52)
     `);
 });
@@ -43,41 +41,59 @@ afterAll(async function () {
 });
 
 const searchParams = {
-    "search": "test",
-    "min_employees": 2,
-    "max_employees": 50
+    search: "test",
+    min_employees: 2,
+    max_employees: 50
+}
+
+const partialSearchParams1 = {
+    min_employees: 2,
+    max_employees: 50
+}
+
+const partialSearchParams2 = {
+    search: "unit",
+    min_employees: 2
+}
+
+const emptySearchParams = {
+    search: undefined,
+    min_employees: undefined,
+    max_employees: undefined
 }
 
 describe("Company.getAll()", () => {
     it("returns all companies when no params are passed in",
         async function () {
-          const response = await Company.getAll();
-
+          const response = await Company.getAll(emptySearchParams);
           expect(response).toEqual([ { handle: "TEST", name: "TESTING" }, { handle: "TEST2", name: "UNITEXAM" } ]);
     });
 
-    it("returns all results that match params sent in by user",
+    it("returns all results that match full params sent in by user",
         async function () {
           const response = await Company.getAll(searchParams);
 
-          expect(Array.isArray(response)).toEqual(true);
-          expect(response.length).toEqual(1);
           expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
-          expect(typeof response[0]).toEqual("object");
-          expect(response[1]).toEqual(undefined);  
+    });
+
+    it("returns all results that match partial params sent in by user",
+        async function () {
+          const response = await Company.getAll(partialSearchParams1);
+          const response2 = await Company.getAll(partialSearchParams2);
+
+          expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
+          expect(response2).toEqual([ { handle: "TEST2", name: "UNITEXAM" } ]);
     });
 });
 
-// fixme make these    const CONSTANT_NAMES
-
-const goodTestCompany = {
+const GOOD_TEST_COMPANY = {
     handle: "TEST3",
     name: "TESTING3",
     num_employees: 103,
     description: "TESTING ADDCOMPANY"
 }
 
-const badTestCompany = {
+const BAD_TEST_COMPANY = {
     handle: "TEST",
     name: "TESTING4",
     description: "TESTING ADDCOMPANY"
@@ -86,32 +102,27 @@ const badTestCompany = {
 describe("Company.addCompany()", () => {
     it("returns data of new company added into database",
         async function () {
-            const response = await Company.addCompany(goodTestCompany);
+            const response = await Company.addCompany(GOOD_TEST_COMPANY);
 
-            expect(typeof response).toEqual("object");
-            expect(response).toEqual({ handle: goodTestCompany.handle,
-            name: "TESTING3",
-            num_employees: 103,
-            description: "TESTING ADDCOMPANY",
-            logo_url: null
-        });
-
-            expect(response).toEqual({...goodTestCompany, logo_url: null})
+            expect(response).toEqual({...GOOD_TEST_COMPANY, logo_url: null})
             
-            const totalCompanies = await Company.getAll();
+            const totalCompanies = await Company.getAll(emptySearchParams);
+            const allCompanyHandles = totalCompanies.map((obj) => {
+                return obj.handle
+            })
 
-            expect(totalCompanies.length).toEqual(3);  // let handles = response.map(...); expect(handles).toEqual(["TEST", "TEST2", "TEST3"])
+            expect(allCompanyHandles).toEqual(["TEST", "TEST2", "TEST3"])
     });
     it("does not accept invalid params",
         async function () {
-            const response = await Company.addCompany(badTestCompany).catch(
+            const response = await Company.addCompany(BAD_TEST_COMPANY).catch(
                 e => expect(e).toEqual({
                     "message": "Company handle already taken",
                     "status": 400,
                   })
             );
             
-            const totalCompanies = await Company.getAll();
+            const totalCompanies = await Company.getAll(emptySearchParams);
 
             expect(totalCompanies.length).toEqual(2);
     });
@@ -136,7 +147,7 @@ describe("Company.getOneCompany()", () => {
             
             expect(response).toEqual(undefined);
             
-            const totalCompanies = await Company.getAll();
+            const totalCompanies = await Company.getAll(emptySearchParams);
 
             expect(totalCompanies.length).toEqual(2);
     });

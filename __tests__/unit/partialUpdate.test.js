@@ -18,6 +18,7 @@ describe("partialUpdate()", () => {
 
         expect(response.query).toEqual("UPDATE tests SET handle=$1, column3=$2 WHERE testA=$3 RETURNING *");
         expect(response.values).toEqual(["value1", "value3", "testB"]);
+        expect(Object.keys(response).length).toEqual(2);
 
   });
 
@@ -27,6 +28,7 @@ describe("partialUpdate()", () => {
 
         expect(response.query).toEqual("UPDATE tests SET description=$1 WHERE testA=$2 RETURNING *");
         expect(response.values).toEqual(["value1", "testB"]);
+        expect(Object.keys(response).length).toEqual(2);
 
   });
 });
