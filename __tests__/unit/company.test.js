@@ -1,12 +1,12 @@
-const Company = require('../../models/company');
+const Company = require("../../models/company");
 
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 
 const app = require("../../app");
 
-let db = require("../../db");
+const db = require("../../db");
 
 // in terminal, make sure to do: 
 // psql jobly-test <  data.sql
@@ -20,15 +20,15 @@ beforeEach(async () => {
             description,
             num_employees)
         VALUES (
-            'TEST', 
-            'TESTING', 
-            'www.test.com', 
-            'DESCRIBE TEST', 
+            "TEST", 
+            "TESTING", 
+            "www.test.com", 
+            "DESCRIBE TEST", 
             5), (
-                'TEST2', 
-                'UNITEXAM', 
-                'www.test.com2', 
-                'DESCRIBE TEST2', 
+                "TEST2", 
+                "UNITEXAM", 
+                "www.test.com2", 
+                "DESCRIBE TEST2", 
                 52)
     `);
 });
@@ -43,9 +43,9 @@ afterAll(async function () {
 });
 
 const searchParams = {
-    'search': 'test',
-    'min_employees': 2,
-    'max_employees': 50
+    "search": "test",
+    "min_employees": 2,
+    "max_employees": 50
 }
 
 describe("Company.getAll()", () => {
@@ -53,7 +53,7 @@ describe("Company.getAll()", () => {
         async function () {
           const response = await Company.getAll();
 
-          expect(response).toEqual([ { handle: 'TEST', name: 'TESTING' }, { handle: 'TEST2', name: 'UNITEXAM' } ]);
+          expect(response).toEqual([ { handle: "TEST", name: "TESTING" }, { handle: "TEST2", name: "UNITEXAM" } ]);
     });
 
     it("returns all results that match params sent in by user",
@@ -62,25 +62,25 @@ describe("Company.getAll()", () => {
 
           expect(Array.isArray(response)).toEqual(true);
           expect(response.length).toEqual(1);
-          expect(response).toEqual([ { handle: 'TEST', name: 'TESTING' } ]);
-          expect(typeof response[0]).toEqual('object');
+          expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
+          expect(typeof response[0]).toEqual("object");
           expect(response[1]).toEqual(undefined);  
     });
 });
 
 // fixme make these    const CONSTANT_NAMES
 
-let goodTestCompany = {
-    handle: 'TEST3',
-    name: 'TESTING3',
+const goodTestCompany = {
+    handle: "TEST3",
+    name: "TESTING3",
     num_employees: 103,
-    description: 'TESTING ADDCOMPANY'
+    description: "TESTING ADDCOMPANY"
 }
 
-let badTestCompany = {
-    handle: 'TEST',
-    name: 'TESTING4',
-    description: 'TESTING ADDCOMPANY'
+const badTestCompany = {
+    handle: "TEST",
+    name: "TESTING4",
+    description: "TESTING ADDCOMPANY"
 }
 
 describe("Company.addCompany()", () => {
@@ -88,11 +88,11 @@ describe("Company.addCompany()", () => {
         async function () {
             const response = await Company.addCompany(goodTestCompany);
 
-            expect(typeof response).toEqual('object');
+            expect(typeof response).toEqual("object");
             expect(response).toEqual({ handle: goodTestCompany.handle,
-            name: 'TESTING3',
+            name: "TESTING3",
             num_employees: 103,
-            description: 'TESTING ADDCOMPANY',
+            description: "TESTING ADDCOMPANY",
             logo_url: null
         });
 
@@ -100,7 +100,7 @@ describe("Company.addCompany()", () => {
             
             const totalCompanies = await Company.getAll();
 
-            expect(totalCompanies.length).toEqual(3);  // let handles = response.map(...); expect(handles).toEqual(['TEST', 'TEST2', 'TEST3'])
+            expect(totalCompanies.length).toEqual(3);  // let handles = response.map(...); expect(handles).toEqual(["TEST", "TEST2", "TEST3"])
     });
     it("does not accept invalid params",
         async function () {
@@ -120,19 +120,19 @@ describe("Company.addCompany()", () => {
 describe("Company.getOneCompany()", () => {
     it("returns data of specified company",
         async function () {
-            const response = await Company.getOneCompany('TEST');
+            const response = await Company.getOneCompany("TEST");
 
-            expect(typeof response).toEqual('object');
-            expect(response).toEqual({ handle: 'TEST',
-            name: 'TESTING',
+            expect(typeof response).toEqual("object");
+            expect(response).toEqual({ handle: "TEST",
+            name: "TESTING",
             num_employees: 5,
-            description: 'DESCRIBE TEST',
-            logo_url: 'www.test.com' });
+            description: "DESCRIBE TEST",
+            logo_url: "www.test.com" });
 
     });
     it("returns undefined object if not found",
         async function () {
-            const response = await Company.getOneCompany('FALSE_TEST');
+            const response = await Company.getOneCompany("FALSE_TEST");
             
             expect(response).toEqual(undefined);
             

@@ -74,7 +74,7 @@ router.patch("/:handle", async function (req, res, next){
 
         const handle = req.params.handle;
 
-        const updatedCompany = await Company.updateOneCompany('companies', req.body, 'handle', handle);
+        const updatedCompany = await Company.updateOneCompany("companies", req.body, "handle", handle);
 
         if (!updatedCompany) {
             return next({

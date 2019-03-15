@@ -1,5 +1,5 @@
 const sqlForPartialUpdate = require("../../helpers/partialUpdate");
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = "test";
 
 const items1 = {
   "handle": "value1",
