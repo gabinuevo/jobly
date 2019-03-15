@@ -69,7 +69,7 @@ afterAll(async function () {
 
 const searchParams = {
     search: "job",
-    min_salary: 10000.00,
+    min_salary: 100000.00,
     min_equity: .01
 }
 
@@ -107,21 +107,28 @@ describe("Job.searchByTerms()", () => {
             company_handle: 'TEST' } ]);
     });
 
-    // it("returns all results that match full params sent in by user",
-    //     async function () {
-    //       const response = await Company.searchByTerms(searchParams);
+    it("returns all results that match full params sent in by user",
+        async function () {
+          const response = await Job.searchByTerms(searchParams);
+          expect(response).toEqual([ { id: expect.any(Number),
+            title: 'TESTJOB1',
+            salary: 500000,
+            equity: 0.05,
+            company_handle: 'TEST' } ]);
+        });
+        
+        it("returns all results that match partial params sent in by user",
+        async function () {
+            const response = await Job.searchByTerms(partialSearchParams1);
+            const response2 = await Job.searchByTerms(partialSearchParams2);
 
-    //       expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
-    // });
-
-    // it("returns all results that match partial params sent in by user",
-    //     async function () {
-    //       const response = await Company.searchByTerms(partialSearchParams1);
-    //       const response2 = await Company.searchByTerms(partialSearchParams2);
-
-    //       expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
-    //       expect(response2).toEqual([ { handle: "TEST2", name: "UNITEXAM" } ]);
-    // });
+          expect(response).toEqual([]);
+          expect(response2).toEqual([ { id: expect.any(Number),
+            title: 'TESTJOB1',
+            salary: 500000,
+            equity: 0.05,
+            company_handle: 'TEST' } ]);
+    });
 });
 
 const GOOD_TEST_COMPANY = {
