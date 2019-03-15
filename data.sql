@@ -11,7 +11,7 @@ CREATE TABLE jobs (
     title text NOT NULL,
     salary float NOT NULL,
     equity float NOT NULL,
-    FOREIGN KEY (company_handle) REFERENCES companies (handle) ON DELETE CASCADE,
+    company_handle text NOT NULL REFERENCES companies ON DELETE CASCADE,
     date_posted timestamp without time zone NOT NULL
 );
 
