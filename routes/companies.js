@@ -16,8 +16,11 @@ router.get("/", async function (req, res, next) {
     try {
         const { search, min_employees, max_employees } = req.body;
         // note: if one is missing, this if statement will not run
-        if (min_employees > max_employees){
-            throw new ExpressError ("Max employees should not be less than Min employees.", BAD_REQUEST);
+        if ((max_employees <= 0)
+           || (min_employees < 0)
+           || (min_employees > max_employees)){
+            throw new ExpressError (`Please enter a valid avlue for min and max
+            employees, or leave fields blank.`, BAD_REQUEST);
         }
         const result = await Company.getAll({ search, min_employees, max_employees });
         return res.json({companies: result});

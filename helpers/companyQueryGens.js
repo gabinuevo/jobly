@@ -1,13 +1,20 @@
-/** Help functions to generate dynamic SQL queries */
+/** Help functions to generate dynamic SQL queries
+ * for companies.
+*/
 
-/** Generates search query to search for, depending on input:
- * - All companies,
- * - A company by name or partial name,
- * - Companies with min max employee requirements,
- * - A company ny name or partial name and min max employees.
+/** Generates search query to search for company or companies:
+ * - All companies search if no arguments entered.
+ * - A company by name or partial name if only search argument entered.
+ * - Companies with min or max or both employee requirements,
+ *   if only min, max, or both arguments are used.
+ * - A company by name or partial name and min or max or both
+ *   if search and some combination of min max are used.
+ * reqObj is and object of potential search parameters passed in
+ * from "/companies/" get route. It can equal any combination
+ * of the following fields:
+ * reqObj = { search, min_employees, max_employees }
  */
 function makeGetQuery(reqObj) {
-// Fixme function name and docstring
     let idx = 1;
     let whereStrMinMax = "";
     let searchStr = "";
