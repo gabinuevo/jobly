@@ -1,4 +1,5 @@
-const { makeGetQuery, makeInsertQuery } = require('../../helpers/queryMakers')
+const { makeGetQuery, makeInsertQuery } = require('../../helpers/companyQueryGens');
+process.env.NODE_ENV = 'test';
 
 const items = {
   'handle': 'value1',
@@ -11,7 +12,7 @@ const items = {
 describe("makeInsertQuery()", () => {
   it("generates variable INSERT query string depending on user input",
       function () {
-        const response = makeInsertQuery(items);
+        const response = makeInsertQuery(items, Object.keys(items));
 
         // Add some for of return string test?
         expect(response.valuesArr).toEqual(["value1", "value2", "value3", "test description", "www.testing.com"]);
@@ -30,8 +31,8 @@ describe("makeGetQuery()", () => {
       function () {
         const response = makeGetQuery(searchItems);
 
-        expect(response.query).toEqual('SELECT handle, name FROM companies WHERE num_employees>$1 AND num_employees<$2 AND name ILIKE $3 OR name ILIKE $4 OR name ILIKE $5');
-        expect(response.searchParams).toEqual(["value2", "value3", "value1%", "%value1%", "%value1"]);
+        expect(response.query).toEqual('SELECT handle, name FROM companies WHERE num_employees>$1 AND num_employees>$2 AND  name ILIKE $3');
+        expect(response.searchParams).toEqual(["value2", "value3", "%value1%"]);
 
   });
 });  

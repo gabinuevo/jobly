@@ -6,7 +6,7 @@
  * - Companies with min max employee requirements,
  * - A company ny name or partial name and min max employees.
  */
-function makeGetQuery(reqObj, safeFields) {
+function makeGetQuery(reqObj) {
 // Fixme function name and docstring
     let idx = 1;
     let whereStrMinMax = '';
@@ -49,7 +49,7 @@ function makeGetQuery(reqObj, safeFields) {
 /** Generates an INSERT SQL query dynamically based on input
  * from client. Minimum information require is handle and name.
  */
-function makeInsertQuery(reqObj) {
+function makeInsertQuery(reqObj, safeFields) {
 
     let query = `INSERT INTO companies (`;
     let valuesArr = [];
@@ -57,10 +57,12 @@ function makeInsertQuery(reqObj) {
     let idx = 1; 
 
     for (let key in reqObj) {
-        query+= `${key}, `;
-        valueStr += `$${idx}, `;
-        valuesArr.push(reqObj[key]);
-        idx++;
+        if (safeFields.includes(key)){
+            query+= `${key}, `;
+            valueStr += `$${idx}, `;
+            valuesArr.push(reqObj[key]);
+            idx++;
+        }
     }
 
     valueStr = valueStr.slice(0, -2); // ", " = 2

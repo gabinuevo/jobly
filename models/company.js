@@ -20,9 +20,10 @@ class Company {
      */
 
     static async getAll(queryObj) {
+        const safeFields = Company.getSafeFields()
         const queryInfo = makeGetQuery(queryObj);
         const result = await db.query(queryInfo.query,
-            queryInfo.searchParams);
+            queryInfo.searchParams, safeFields);
 
         return result.rows;
     }
@@ -31,7 +32,8 @@ class Company {
      * {handle, name, num_employees, descrption, logo_url} */
     static async addCompany(inputObj) {
         try {
-            const queryInfo = makeInsertQuery(inputObj);
+            const safeFields = Company.getSafeFields()
+            const queryInfo = makeInsertQuery(inputObj, safeFields);
             const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
             return result.rows[0];
@@ -56,7 +58,7 @@ class Company {
      * company data. */
     static async updateOneCompany(table, items, key, id) {
         const safeFields = Company.getSafeFields()
-        const queryInfo = sqlForPartialUpdate(table, items, key, id, safeFields );
+        const queryInfo = sqlForPartialUpdate(table, items, key, id, safeField );
 
         const result = await db.query(queryInfo.query, queryInfo.values);
 
