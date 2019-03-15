@@ -12,7 +12,7 @@ class Company {
     static getSafeFields(){
         const safeFields = ["handle", "name", "num_employees",
         "description", "logo_url"];
-        return safeFields
+        return safeFields;
     }
 
     /** Get a list of companies 
