@@ -6,6 +6,15 @@ CREATE TABLE companies (
     logo_url text
 );
 
+CREATE TABLE jobs (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    title text NOT NULL,
+    salary float NOT NULL,
+    equity float NOT NULL,
+    FOREIGN KEY (company_handle) REFERENCES companies (handle) ON DELETE CASCADE,
+    date_posted timestamp without time zone NOT NULL
+);
+
 -- CREATE TABLE messages (
 --     id SERIAL PRIMARY KEY,
 --     from_username text NOT NULL REFERENCES users,
