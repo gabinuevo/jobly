@@ -38,17 +38,20 @@ beforeEach(async () => {
             title,
             salary,
             equity,
-            company_handle)
+            company_handle,
+            date_posted)
         VALUES (
             'TESTJOB1', 
             '500000.00', 
             '0.05',
-            'TEST'
+            'TEST',
+            'Fri Mar 10 2019 12:01:47'
             ), (
                 'TESTJOB2', 
                 '50000.00', 
                 '0.12',
-                'TEST2'
+                'TEST2',
+                'Fri Mar 14 2019 12:01:47'
                 )
     `);
 });
@@ -91,16 +94,17 @@ describe("Job.searchByTerms()", () => {
     it("returns all jobs when no params are passed in",
         async function () {
           const response = await Job.searchByTerms(emptySearchParams);
-          expect(response).toEqual([ { id: expect.any(Number),
-            title: 'TESTJOB1',
-            salary: 500000,
-            equity: 0.05,
-            company_handle: 'TEST' },
+          expect(response).toEqual([ 
           { id: expect.any(Number),
             title: 'TESTJOB2',
             salary: 50000,
             equity: 0.12,
-            company_handle: 'TEST2' } ]);
+            company_handle: 'TEST2' },
+            { id: expect.any(Number),
+            title: 'TESTJOB1',
+            salary: 500000,
+            equity: 0.05,
+            company_handle: 'TEST' } ]);
     });
 
     // it("returns all results that match full params sent in by user",
