@@ -4,12 +4,16 @@ const sqlForPartialUpdate = require("../helpers/partialUpdate");
 const { makeGetQuery, makeInsertQuery } = require("../helpers/companyQueryGens");
 const { BAD_REQUEST } = require("../config");
 
-const safeFields = ["handle", "name", "num_employees",
-"description", "logo_url"];
 
 /** A company on the site */
 
 class Company {
+
+    static getSafeFields(){
+        const safeFields = ["handle", "name", "num_employees",
+        "description", "logo_url"];
+        return safeFields
+    }
 
     /** Get a list of companies -- returns
      * [{handle, name}, ...]
@@ -51,8 +55,8 @@ class Company {
      * changes appropriate fields, returns company object with
      * company data. */
     static async updateOneCompany(table, items, key, id) {
-
-        const queryInfo = sqlForPartialUpdate(table, items, key, id);
+        const safeFields = Company.getSafeFields()
+        const queryInfo = sqlForPartialUpdate(table, items, key, id, safeFields );
 
         const result = await db.query(queryInfo.query, queryInfo.values);
 
