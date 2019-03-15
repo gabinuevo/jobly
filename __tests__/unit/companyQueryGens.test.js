@@ -13,8 +13,7 @@ describe("makeInsertQuery()", () => {
   it("generates variable INSERT query string depending on user input",
       function () {
         const response = makeInsertQuery(items, Object.keys(items));
-
-        // Add some for of return string test?
+        
         expect(response.valuesArr).toEqual(["value1", "value2", "value3", "test description", "www.testing.com"]);
 
   });
