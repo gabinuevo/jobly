@@ -62,24 +62,24 @@ const emptySearchParams = {
     max_employees: undefined
 }
 
-describe("Company.getAll()", () => {
+describe("Company.searchByTerms()", () => {
     it("returns all companies when no params are passed in",
         async function () {
-          const response = await Company.getAll(emptySearchParams);
+          const response = await Company.searchByTerms(emptySearchParams);
           expect(response).toEqual([ { handle: "TEST", name: "TESTING" }, { handle: "TEST2", name: "UNITEXAM" } ]);
     });
 
     it("returns all results that match full params sent in by user",
         async function () {
-          const response = await Company.getAll(searchParams);
+          const response = await Company.searchByTerms(searchParams);
 
           expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
     });
 
     it("returns all results that match partial params sent in by user",
         async function () {
-          const response = await Company.getAll(partialSearchParams1);
-          const response2 = await Company.getAll(partialSearchParams2);
+          const response = await Company.searchByTerms(partialSearchParams1);
+          const response2 = await Company.searchByTerms(partialSearchParams2);
 
           expect(response).toEqual([ { handle: "TEST", name: "TESTING" } ]);
           expect(response2).toEqual([ { handle: "TEST2", name: "UNITEXAM" } ]);
@@ -106,7 +106,7 @@ describe("Company.addCompany()", () => {
 
             expect(response).toEqual({...GOOD_TEST_COMPANY, logo_url: null})
             
-            const totalCompanies = await Company.getAll(emptySearchParams);
+            const totalCompanies = await Company.searchByTerms(emptySearchParams);
             const allCompanyHandles = totalCompanies.map((obj) => {
                 return obj.handle
             })
@@ -122,7 +122,7 @@ describe("Company.addCompany()", () => {
                   })
             );
             
-            const totalCompanies = await Company.getAll(emptySearchParams);
+            const totalCompanies = await Company.searchByTerms(emptySearchParams);
 
             expect(totalCompanies.length).toEqual(2);
     });
@@ -147,7 +147,7 @@ describe("Company.getOneCompany()", () => {
             
             expect(response).toEqual(undefined);
             
-            const totalCompanies = await Company.getAll(emptySearchParams);
+            const totalCompanies = await Company.searchByTerms(emptySearchParams);
 
             expect(totalCompanies.length).toEqual(2);
     });

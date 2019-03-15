@@ -9,7 +9,7 @@
  *   if only min, max, or both arguments are used.
  * - A company by name or partial name and min or max or both
  *   if search and some combination of min max are used.
- * reqObj is and object of potential search parameters passed in
+ * reqObj is an object of potential search parameters passed in
  * from "/companies/" get route. It can equal any combination
  * of the following fields:
  * reqObj = { search, min_employees, max_employees }

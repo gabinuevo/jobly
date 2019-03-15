@@ -22,7 +22,7 @@ router.get("/", async function (req, res, next) {
             throw new ExpressError (`Please enter a valid avlue for min and max
             employees, or leave fields blank.`, BAD_REQUEST);
         }
-        const result = await Company.getAll({ search, min_employees, max_employees });
+        const result = await Company.searchByTerms({ search, min_employees, max_employees });
         return res.json({companies: result});
     } catch (err) {
         return next(err);

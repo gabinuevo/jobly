@@ -22,7 +22,7 @@ class Company {
      * [{handle, name}, ...]
      */
 
-    static async getAll(queryObj) {
+    static async searchByTerms(queryObj) {
         const safeFields = this.getSafeFields();
 
         const queryInfo = makeGetQuery(queryObj, safeFields);
