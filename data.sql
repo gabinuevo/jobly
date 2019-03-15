@@ -7,7 +7,7 @@ CREATE TABLE companies (
 );
 
 CREATE TABLE jobs (
-    id int AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     title text NOT NULL,
     salary float NOT NULL,
     equity float NOT NULL,
