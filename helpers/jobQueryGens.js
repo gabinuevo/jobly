@@ -16,42 +16,42 @@
  */
 function makeGetQuery(reqObj) {
     let idx = 1;
-    let whereStrMinMax = "";
+    let whereStrMins = "";
     let searchStr = "";
     let searchParams = [];
 
-    let query = `SELECT handle, name FROM companies `;
+    let query = `SELECT id, title, salary, equity, company_handle FROM jobs `;
 
     if (!reqObj) {
         return query;
     }
 
     // Intentionally not letting searches for companies with 0 employees pass.
-    if (reqObj["min_employees"]) {
-        whereStrMinMax += `num_employees>$${idx} AND `;
-        searchParams.push(reqObj["min_employees"]);
+    if (reqObj["min_salary"]) {
+        whereStrMins += `salary>$${idx} AND `;
+        searchParams.push(reqObj["min_salary"]);
         idx += 1;
     }
 
-    if (reqObj["max_employees"]) {
-        whereStrMinMax += `num_employees<$${idx} AND `;
-        searchParams.push(reqObj["max_employees"]);
+    if (reqObj["min_equity"]) {
+        whereStrMins += `min_equity>$${idx} AND `;
+        searchParams.push(reqObj["min_equity"]);
         idx += 1;
     }
 
     if (reqObj["search"]) {
-        searchStr += `name ILIKE $${idx}`;
+        searchStr += `title ILIKE $${idx}`;
         searchParams.push(`%${reqObj["search"]}%`);
         idx += 1;
     }    
 
-    if (searchStr && !whereStrMinMax) {
+    if (searchStr && !whereStrMins) {
         query += `WHERE ${searchStr}`;
-    } else if (!searchStr && whereStrMinMax) {
-        whereStrMinMax = whereStrMinMax.slice(0, -5); // " AND " = 5
-        query += `WHERE ${whereStrMinMax}`;
-    } else if (searchStr && whereStrMinMax) {
-        query += `WHERE ${whereStrMinMax} ${searchStr}`;
+    } else if (!searchStr && whereStrMins) {
+        whereStrMins = whereStrMins.slice(0, -5); // " AND " = 5
+        query += `WHERE ${whereStrMins}`;
+    } else if (searchStr && whereStrMins) {
+        query += `WHERE ${whereStrMins} ${searchStr}`;
     }
     
     return {query, searchParams};
