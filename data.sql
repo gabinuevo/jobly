@@ -13,7 +13,7 @@ CREATE TABLE jobs (
     equity float NOT NULL,
     company_handle text NOT NULL REFERENCES companies ON DELETE CASCADE,
     date_posted timestamp without time zone DEFAULT NOW() NOT NULL
-    CONSTRAINT equity CHECK ((equity<1))
+    CONSTRAINT equity CHECK ((equity<=1))
 );
 
 -- CREATE TABLE messages (
