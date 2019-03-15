@@ -38,7 +38,7 @@ class Company {
 
             return result.rows[0];
         } catch (err) {
-            throw {status: BAD_REQUEST, message: 'Company handle already taken'}
+            throw {status: BAD_REQUEST, message: "Company handle already taken"}
         }
     }
 

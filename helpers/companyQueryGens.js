@@ -9,8 +9,8 @@
 function makeGetQuery(reqObj) {
 // Fixme function name and docstring
     let idx = 1;
-    let whereStrMinMax = '';
-    let searchStr = '';
+    let whereStrMinMax = "";
+    let searchStr = "";
     let searchParams = [];
 
     let query = `SELECT handle, name FROM companies `;
@@ -53,7 +53,7 @@ function makeInsertQuery(reqObj, safeFields) {
 
     let query = `INSERT INTO companies (`;
     let valuesArr = [];
-    let valueStr = ') VALUES (';
+    let valueStr = ") VALUES (";
     let idx = 1; 
 
     for (let key in reqObj) {
