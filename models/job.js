@@ -1,8 +1,7 @@
 /** Job class for Jobly */
 const db = require("../db");
 const sqlForPartialUpdate = require("../helpers/partialUpdate");
-// Replace below with job helper queries.
-// const { makeGetQuery, makeInsertQuery } = require("../helpers/companyQueryGens");
+const { makeGetQuery, makeInsertQuery } = require("../helpers/jobQueryGens");
 const { BAD_REQUEST } = require("../config");
 
 
@@ -20,7 +19,7 @@ class Job {
      * {handle, name, num_employees, descrption, logo_url} */
     static async addJob(inputObj) {
         const safeFields = Job.getSafeFields();
-        // const queryInfo = makeInsertQuery(inputObj, safeFields);
+        const queryInfo = makeInsertQuery(inputObj, safeFields);
         const result = await db.query(queryInfo.query, queryInfo.valuesArr);
 
         return result.rows[0];
