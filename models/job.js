@@ -25,6 +25,22 @@ class Job {
         return result.rows[0];
     }
 
+    /** Get a list of jobs 
+     * NOTE: MUST TAKE OBJECT
+     * -- returns
+     * [{handle, name}, ...]
+     */
+
+    static async searchByTerms(queryObj) {
+        const safeFields = this.getSafeFields();
+
+        const queryInfo = makeGetQuery(queryObj, safeFields);
+        const result = await db.query(queryInfo.query,
+            queryInfo.searchParams);
+
+        return result.rows;
+    }
+
 }
 
 module.exports = Job;

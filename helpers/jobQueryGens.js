@@ -34,7 +34,7 @@ function makeGetQuery(reqObj) {
     }
 
     if (reqObj["min_equity"]) {
-        whereStrMins += `min_equity>$${idx} AND `;
+        whereStrMins += `equity>$${idx} AND `;
         searchParams.push(reqObj["min_equity"]);
         idx += 1;
     }
@@ -53,6 +53,8 @@ function makeGetQuery(reqObj) {
     } else if (searchStr && whereStrMins) {
         query += `WHERE ${whereStrMins} ${searchStr}`;
     }
+
+    query += "ORDER BY date_posted DESC"
     
     return {query, searchParams};
 }
