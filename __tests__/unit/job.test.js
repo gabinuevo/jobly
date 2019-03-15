@@ -131,47 +131,52 @@ describe("Job.searchByTerms()", () => {
     });
 });
 
-const GOOD_TEST_COMPANY = {
-    handle: "TEST3",
-    name: "TESTING3",
-    num_employees: 103,
-    description: "TESTING ADDCOMPANY"
+const GOOD_TEST_JOB = {
+    title: "TESTJOB3",
+    salary: 100000,
+    equity: 0.03,
+    company_handle: "TEST",
+    date_posted: "2019-03-10T19:01:47.000Z"
 }
 
-const BAD_TEST_COMPANY = {
-    handle: "TEST",
-    name: "TESTING4",
-    description: "TESTING ADDCOMPANY"
+const BAD_TEST_JOB = {
+    title: "TESTJOB3",
+    salary: "Not a float",
+    equity: 0.03,
+    company_handle: "TEST",
+    date_posted: "2019-03-10T19:01:47.000Z"
 }
 
-// describe("Company.addCompany()", () => {
-//     it("returns data of new company added into database",
-//         async function () {
-//             const response = await Company.addCompany(GOOD_TEST_COMPANY);
+describe("Job.addJob()", () => {
+    it("returns data of new job added into database",
+        async function () {
+            const response = await Job.addJob(GOOD_TEST_JOB);
 
-//             expect(response).toEqual({...GOOD_TEST_COMPANY, logo_url: null})
+            expect(response).toEqual({ ...GOOD_TEST_JOB,
+                                     id: expect.any(Number),
+                                     date_posted: expect.any(Date) })
             
-//             const totalCompanies = await Company.searchByTerms(emptySearchParams);
-//             const allCompanyHandles = totalCompanies.map((obj) => {
-//                 return obj.handle
-//             })
+            const totalJobs = await Job.searchByTerms(emptySearchParams);
+            const allJobTitles = totalJobs.map((obj) => {
+                return obj.title;
+            })
 
-//             expect(allCompanyHandles).toEqual(["TEST", "TEST2", "TEST3"])
-//     });
-//     it("does not accept invalid params",
-//         async function () {
-//             const response = await Company.addCompany(BAD_TEST_COMPANY).catch(
-//                 e => expect(e).toEqual({
-//                     "message": "Company handle already taken",
-//                     "status": 400,
-//                   })
-//             );
+            expect(allJobTitles).toEqual(["TESTJOB1", "TESTJOB2", "TESTJOB3"])
+    });
+    // it("does not accept invalid params",
+    //     async function () {
+    //         const response = await Company.addCompany(BAD_TEST_JOB).catch(
+    //             e => expect(e).toEqual({
+    //                 "message": "Company handle already taken",
+    //                 "status": 400,
+    //               })
+    //         );
             
-//             const totalCompanies = await Company.searchByTerms(emptySearchParams);
+    //         const totalCompanies = await Company.searchByTerms(emptySearchParams);
 
-//             expect(totalCompanies.length).toEqual(2);
-//     });
-// });
+    //         expect(totalCompanies.length).toEqual(2);
+    // });
+});
 
 // describe("Company.getOneCompany()", () => {
 //     it("returns data of specified company",
